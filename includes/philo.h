@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:55 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/02 17:17:29 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/02 21:23:19 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "stdio.h"
 # include "stdlib.h"
+# include "unistd.h"
 # include "pthread.h"
 # include "sys/time.h"
 

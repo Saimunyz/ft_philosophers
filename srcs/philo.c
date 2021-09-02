@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/02 17:20:41 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/02 21:30:25 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,36 @@ t_data	parse_argv(int argc, char **argv)
 	return (data);
 }
 
-void	*live(void *param)
+void	*live(void *philo)
 {
 	struct timeval	tv;
+	t_philo *p;
+	int r;
+	int	l;
 
+	p = (t_philo *)philo;
 	gettimeofday(&tv, NULL);
-
-
-	printf();
+	l = pthread_mutex_lock(&p->left);
+	if (l)
+		printf("%d %d has taken a fork\n", tv.tv_usec, p->position);
+	r = pthread_mutex_lock(&p->right);
+	if (r)
+		printf("%d %d has taken a fork\n", tv.tv_usec, p->position);
+	if (r && l)
+	{
+		printf("%d %d is eating\n", tv.tv_usec, p->position);
+		p->eating = 1;
+		usleep(100);
+		p->eating = 0;
+	}
+	pthread_mutex_unlock(&p->left);
+	pthread_mutex_unlock(&p->right);
+	printf("%d %d is sleeping\n", tv.tv_usec, p->position);
+	usleep(100);
+	printf("%d %d is thinking\n", tv.tv_usec, p->position);
+	usleep(100);
+	if ()
+		printf("%d %d died", tv.tv_usec, p->position);
 }
 
 int	philo(t_data data)
@@ -54,7 +76,7 @@ int	philo(t_data data)
 		return (-1);
 	while (i < data.num_of_philo)
 	{
-		pthread_create(&philos[i].p, NULL, live, NULL);
+		pthread_create(&philos[i].p, NULL, live, &(philos[i]));
 		pthread_detach(philos[i].p);
 		i++;
 	}
