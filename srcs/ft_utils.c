@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:49:30 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/06/17 16:42:11 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/02 17:14:13 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,38 @@ int	ft_check_data(t_data data, int argc)
 	return (1);
 }
 
-t_philo	*ft_init_philo(t_data data)
+t_philo	*ft_init_philos(t_data data)
 {
-	pthread_t	th;
 	t_philo		*philos;
 	int			i;
 
 	i = 0;
 	philos = (t_philo *)malloc(sizeof(t_philo) * data.num_of_philo);
 	if (!philos)
-		return (1); // error
+		return (NULL); // error
 	while (i < data.num_of_philo)
 	{
+		pthread_mutex_init(&philos[i].right, NULL);
+		if (i != 0)
+			philos[i].left = philos[i - 1].right;
+		philos[i].position = i + 1;
+		philos[i].thinking = 0;
+		philos[i].eating = 0;
+		philos[i].sleeping = 0;
+		i++;
+	}
+	philos[0].left = philos[data.num_of_philo - 1].right;
+	return (philos);
+}
 
+void	ft_clear_philos(t_philo *philos, int number_of_philos)
+{
+	int	i;
+
+	i = 0;
+	while(i < number_of_philos)
+	{
+		pthread_mutex_destroy(&philos[i].right);
+		i++;
 	}
 }

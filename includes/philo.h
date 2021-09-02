@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:55 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/06/17 16:38:50 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/02 17:17:29 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "stdio.h"
 # include "stdlib.h"
 # include "pthread.h"
+# include "sys/time.h"
 
 typedef struct s_philo
 {
@@ -39,7 +40,9 @@ typedef struct s_data
 
 int				ft_isdigit(int c);
 int				ft_atoi(const char *str);
-t_data			ft_init_data(void);
 int				ft_check_data(t_data data, int argc);
+void			ft_clear_philos(t_philo *philos, int number_of_philos);
+t_data			ft_init_data(void);
+t_philo			*ft_init_philos(t_data data);
 
 #endif

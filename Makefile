@@ -2,6 +2,7 @@ NAME =		philo
 
 HEADER =	includes/*.h
 FLAGS =		-Wall -Werror -Wextra
+LFLAGS =	-lpthread
 
 SRC_DIR =	srcs/
 
