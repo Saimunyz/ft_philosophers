@@ -3,12 +3,15 @@ NAME =		philo
 HEADER =	includes/*.h
 FLAGS =		-Wall -Werror -Wextra
 LFLAGS =	-lpthread
+ALL_INC =	-I includes
 
 SRC_DIR =	srcs/
 
 CFILE =		philo.c \
 			ft_isdigit.c \
+			ft_atoi.c \
 			ft_utils.c \
+			ft_monitor.c \
 
 
 OFILE =		$(CFILE:.c=.o)
@@ -24,7 +27,7 @@ $(NAME): $(OBJ)
 		gcc -g $(FLAGS) $(OBJ) $(LFLAGS) -o $(NAME)
 
 %.o : %.c
-		gcc -g $(FLAGS) -c $< -o $@
+		gcc -g $(FLAGS) $(ALL_INC) -c $< -o $@
 
 clean:
 		@/bin/rm -f $(OBJ)

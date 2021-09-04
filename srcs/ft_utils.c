@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:49:30 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/02 17:14:13 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/04 15:00:53 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_philo	*ft_init_philos(t_data data)
 	i = 0;
 	philos = (t_philo *)malloc(sizeof(t_philo) * data.num_of_philo);
 	if (!philos)
-		return (NULL); // error
+		return (NULL);
 	while (i < data.num_of_philo)
 	{
 		pthread_mutex_init(&philos[i].right, NULL);
@@ -55,6 +55,9 @@ t_philo	*ft_init_philos(t_data data)
 		philos[i].thinking = 0;
 		philos[i].eating = 0;
 		philos[i].sleeping = 0;
+		philos[i].time_to_die = data.time_to_die;
+		philos[i].time_to_sleep = data.time_to_sleep;
+		philos[i].time_to_eat = data.time_to_eat;
 		i++;
 	}
 	philos[0].left = philos[data.num_of_philo - 1].right;
@@ -71,4 +74,14 @@ void	ft_clear_philos(t_philo *philos, int number_of_philos)
 		pthread_mutex_destroy(&philos[i].right);
 		i++;
 	}
+}
+
+long	ft_get_time(void)
+{
+	struct timeval	tv;
+	long		time;
+
+	gettimeofday(&tv, NULL);
+	time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	return (time);
 }

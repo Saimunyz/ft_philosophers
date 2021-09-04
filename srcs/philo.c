@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/02 21:30:25 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/04 16:34:44 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,30 @@ t_data	parse_argv(int argc, char **argv)
 
 void	*live(void *philo)
 {
-	struct timeval	tv;
 	t_philo *p;
-	int r;
-	int	l;
+	long	time;
 
 	p = (t_philo *)philo;
-	gettimeofday(&tv, NULL);
-	l = pthread_mutex_lock(&p->left);
-	if (l)
-		printf("%d %d has taken a fork\n", tv.tv_usec, p->position);
-	r = pthread_mutex_lock(&p->right);
-	if (r)
-		printf("%d %d has taken a fork\n", tv.tv_usec, p->position);
-	if (r && l)
+	p->start_time = ft_get_time();
+	p->last_eat = p->start_time;
+	while (1)
 	{
-		printf("%d %d is eating\n", tv.tv_usec, p->position);
+		time = ft_get_time();
+		pthread_mutex_lock(&p->left);
+		printf("%ld %d has taken a left fork\n", time - p->start_time, p->position);
+		pthread_mutex_lock(&p->right);
+		printf("%ld %d has taken a right fork\n", time - p->start_time, p->position);
 		p->eating = 1;
-		usleep(100);
+		printf("%ld %d is eating\n", time - p->start_time, p->position);
+		p->last_eat = time;
+		usleep(p->time_to_eat);
+		pthread_mutex_unlock(&p->left);
+		pthread_mutex_unlock(&p->right);
 		p->eating = 0;
+		printf("%ld %d is sleeping\n", time - p->start_time, p->position);
+		usleep(p->time_to_sleep);
+		printf("%ld %d is thinking\n", time - p->start_time, p->position);
 	}
-	pthread_mutex_unlock(&p->left);
-	pthread_mutex_unlock(&p->right);
-	printf("%d %d is sleeping\n", tv.tv_usec, p->position);
-	usleep(100);
-	printf("%d %d is thinking\n", tv.tv_usec, p->position);
-	usleep(100);
-	if ()
-		printf("%d %d died", tv.tv_usec, p->position);
 }
 
 int	philo(t_data data)
@@ -78,11 +74,13 @@ int	philo(t_data data)
 	{
 		pthread_create(&philos[i].p, NULL, live, &(philos[i]));
 		pthread_detach(philos[i].p);
+		usleep(100);
 		i++;
 	}
+	ft_monitor(philos, &data);
 	ft_clear_philos(philos, data.num_of_philo);
 	free(philos);
-
+	return (1);
 }
 
 int	main(int argc, char **argv)
@@ -91,7 +89,7 @@ int	main(int argc, char **argv)
 
 	if (argc == 5 || argc == 6)
 	{
-		data = parse_argv(argv, argc);
+		data = parse_argv(argc, argv);
 		if (ft_check_data(data, argc))
 		{
 			if (philo(data) == -1)
