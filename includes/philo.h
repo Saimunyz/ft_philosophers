@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:55 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/04 16:34:19 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/05 23:08:59 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,19 @@
 typedef struct s_philo
 {
 	pthread_t		p;
-	int				position;
+	int				pos;
 	int				eating;
 	int				thinking;
 	int				sleeping;
 	int				time_to_sleep;
 	int				time_to_eat;
 	int				time_to_die;
-	long			start_time;
+	int				num_eat;
+	long			start;
 	long			last_eat;
 	pthread_mutex_t	left;
 	pthread_mutex_t	right;
+	pthread_mutex_t	tool;
 }				t_philo;
 
 typedef struct s_data
@@ -48,7 +50,7 @@ int				ft_isdigit(char *str);
 int				ft_atoi(const char *str);
 int				ft_check_data(t_data data, int argc);
 void			ft_monitor(t_philo *philo, t_data *data);
-long			ft_get_time(void);
+long			ft_time(void);
 void			ft_clear_philos(t_philo *philos, int number_of_philos);
 t_data			ft_init_data(void);
 t_philo			*ft_init_philos(t_data data);
