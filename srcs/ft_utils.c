@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:49:30 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/05 23:27:33 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/07 00:35:09 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ t_philo	*ft_init_philos(t_data data)
 		if (i != 0)
 			philos[i].left = philos[i - 1].right;
 		philos[i].pos = i + 1;
-		philos[i].thinking = 0;
+		philos[i].is_dead = 0;
 		philos[i].eating = 0;
-		philos[i].sleeping = 0;
 		philos[i].num_eat = 0;
 		philos[i].time_to_die = data.time_to_die;
 		philos[i].time_to_sleep = data.time_to_sleep;
 		philos[i].time_to_eat = data.time_to_eat;
+		pthread_mutex_init(&philos[i].tool, NULL);
 		i++;
 	}
 	philos[0].left = philos[data.num_of_philo - 1].right;
@@ -73,6 +73,7 @@ void	ft_clear_philos(t_philo *philos, int number_of_philos)
 	while(i < number_of_philos)
 	{
 		pthread_mutex_destroy(&philos[i].right);
+		pthread_mutex_destroy(&philos[i].tool);
 		i++;
 	}
 }

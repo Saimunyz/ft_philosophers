@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:55 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/05 23:08:59 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/07 00:33:00 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ typedef struct s_philo
 	pthread_t		p;
 	int				pos;
 	int				eating;
-	int				thinking;
-	int				sleeping;
+	int				is_dead;
 	int				time_to_sleep;
 	int				time_to_eat;
 	int				time_to_die;

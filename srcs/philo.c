@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/05 23:17:39 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/07 00:47:18 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ t_data	parse_argv(int argc, char **argv)
 	return (data);
 }
 
+void	ft_print(char *str, t_philo *p)
+{
+	pthread_mutex_lock(&p->tool);
+	printf("%ld %d %s\n", ft_time() - p->start, p->pos, str);
+	pthread_mutex_unlock(&p->tool);
+}
+
 void	*live(void *philo)
 {
 	t_philo *p;
@@ -42,21 +49,23 @@ void	*live(void *philo)
 	p->last_eat = p->start;
 	while (1)
 	{
+		if (p->is_dead)
+			return (0);
 		pthread_mutex_lock(&p->left);
-		printf("%ld %d has taken a left fork\n", ft_time() - p->start, p->pos);
+		ft_print("has taken a left fork", p);
 		pthread_mutex_lock(&p->right);
-		printf("%ld %d has taken a right fork\n", ft_time() - p->start, p->pos);
+		ft_print("has taken a right fork", p);
 		p->eating = 1;
-		printf("%ld %d is eating\n", ft_time() - p->start, p->pos);
-		usleep(p->time_to_eat);
-		p->num_eat++;
+		ft_print("is eating", p);
+		usleep(p->time_to_eat * 500);
 		p->last_eat = ft_time();
+		p->num_eat++;
 		pthread_mutex_unlock(&p->left);
 		pthread_mutex_unlock(&p->right);
 		p->eating = 0;
-		printf("%ld %d is sleeping\n", ft_time() - p->start, p->pos);
-		usleep(p->time_to_sleep);
-		printf("%ld %d is thinking\n", ft_time() - p->start, p->pos);
+		ft_print("is sleeping", p);
+		usleep(p->time_to_sleep * 500);
+		ft_print("is thinking", p);
 	}
 }
 
