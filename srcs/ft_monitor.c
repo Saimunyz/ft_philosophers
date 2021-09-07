@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 16:22:42 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/07 23:13:33 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/07 23:44:57 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,11 @@
 int	ft_check_is_life(t_philo *p, int num_of_philo, int num_eat)
 {
 	int		i;
-	// long	time;
 
 	i = 0;
 	while (i < num_of_philo)
 	{
-		// time = ;
-		if (ft_time() - p[i].last_eat >= p[i].time_to_die && p[i].eating != 1)
+		if (ft_time() - p[i].last_eat >= p[i].time_to_die)// && p[i].eating != 1)
 		{
 			p[i].is_dead = 1;
 			printf("%ld %d died\n", ft_time() - p[i].start, p[i].pos);
