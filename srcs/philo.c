@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/07 00:47:18 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/07 22:43:10 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_data	parse_argv(int argc, char **argv)
 	if (argc == 6)
 	{
 		if (ft_isdigit(argv[5]))
-			data.num_of_times_each_pgilo_must_eat = ft_atoi(argv[5]);
+			data.num_eat = ft_atoi(argv[5]);
 	}
 	return (data);
 }
@@ -36,8 +36,20 @@ t_data	parse_argv(int argc, char **argv)
 void	ft_print(char *str, t_philo *p)
 {
 	pthread_mutex_lock(&p->tool);
-	printf("%ld %d %s\n", ft_time() - p->start, p->pos, str);
+	if (p->is_dead)
+		return ;
+	printf("%lu %d %s\n", ft_time() - p->start, p->pos, str);
 	pthread_mutex_unlock(&p->tool);
+}
+
+void	ft_usleep(int	time)
+{
+	long	stop;
+
+	stop = ft_time() + (long)time;
+	while (ft_time() < stop)
+		usleep(0);
+
 }
 
 void	*live(void *philo)
@@ -46,27 +58,26 @@ void	*live(void *philo)
 
 	p = (t_philo *)philo;
 	p->start = ft_time();
-	p->last_eat = p->start;
-	while (1)
+	p->last_eat = p->start + p->time_to_die;
+	while (1 && !p->is_dead)
 	{
-		if (p->is_dead)
-			return (0);
 		pthread_mutex_lock(&p->left);
 		ft_print("has taken a left fork", p);
 		pthread_mutex_lock(&p->right);
 		ft_print("has taken a right fork", p);
 		p->eating = 1;
 		ft_print("is eating", p);
-		usleep(p->time_to_eat * 500);
+		usleep(p->time_to_eat);
 		p->last_eat = ft_time();
 		p->num_eat++;
 		pthread_mutex_unlock(&p->left);
 		pthread_mutex_unlock(&p->right);
 		p->eating = 0;
 		ft_print("is sleeping", p);
-		usleep(p->time_to_sleep * 500);
+		usleep(p->time_to_sleep);
 		ft_print("is thinking", p);
 	}
+	return (0);
 }
 
 int	philo(t_data data)

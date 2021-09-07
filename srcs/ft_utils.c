@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:49:30 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/07 00:35:09 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/07 22:42:37 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_data	ft_init_data(void)
 	data.time_to_die = 0;
 	data.time_to_eat = 0;
 	data.time_to_sleep = 0;
-	data.num_of_times_each_pgilo_must_eat = 0;
+	data.num_eat = 0;
 	return (data);
 }
 
@@ -31,7 +31,7 @@ int	ft_check_data(t_data data, int argc)
 		return (0);
 	if (argc == 6)
 	{
-		if (data.num_of_times_each_pgilo_must_eat == 0)
+		if (data.num_eat == 0)
 			return (0);
 	}
 	return (1);
@@ -81,9 +81,7 @@ void	ft_clear_philos(t_philo *philos, int number_of_philos)
 long	ft_time(void)
 {
 	struct timeval	tv;
-	long		time;
 
 	gettimeofday(&tv, NULL);
-	time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-	return (time);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }

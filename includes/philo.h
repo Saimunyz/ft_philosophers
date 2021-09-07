@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:55 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/07 00:33:00 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/07 19:59:14 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ typedef struct s_data
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
-	int	num_of_times_each_pgilo_must_eat;
+	int	num_eat;
+	pthread_mutex_t	*forks;
 }				t_data;
 
 int				ft_isdigit(char *str);
