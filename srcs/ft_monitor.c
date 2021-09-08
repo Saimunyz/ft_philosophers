@@ -6,22 +6,34 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 16:22:42 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/07 23:44:57 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 00:07:28 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_check_is_life(t_philo *p, int num_of_philo, int num_eat)
+static void	ft_stop(t_philo *p, int num_of_philo)
+{
+	int	i;
+
+	i = 0;
+	while(i < num_of_philo)
+	{
+		p[i].stop = 1;
+		i++;
+	}
+}
+
+int	ft_check_is_life(t_philo *p, int num_of_philo, int num_eat, int time_to_die)
 {
 	int		i;
 
 	i = 0;
 	while (i < num_of_philo)
 	{
-		if (ft_time() - p[i].last_eat >= p[i].time_to_die)// && p[i].eating != 1)
+		if (ft_time() - p[i].last_eat >= time_to_die && p[i].eating != 1)
 		{
-			p[i].is_dead = 1;
+			ft_stop(p, num_of_philo);
 			printf("%ld %d died\n", ft_time() - p[i].start, p[i].pos);
 			return(1);
 		}
@@ -50,7 +62,8 @@ void	ft_monitor(t_philo *philo, t_data *data)
 {
 	while (1)
 	{
-		if (ft_check_is_life(philo, data->num_of_philo, data->num_eat))
+		if (ft_check_is_life(philo, data->num_of_philo, data->num_eat,
+			data->time_to_die))
 			return ;
 	}
 }

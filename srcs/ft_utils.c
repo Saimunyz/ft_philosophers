@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:49:30 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/08 17:38:15 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 00:23:00 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,63 +24,69 @@ t_data	ft_init_data(void)
 	return (data);
 }
 
-int	ft_check_data(t_data data, int argc)
+int	ft_check_data(t_data *data, int argc)
 {
-	if (data.num_of_philo == 0 || data.time_to_die == 0 ||
-		data.time_to_eat == 0 || data.time_to_sleep == 0)
+	int	i;
+
+	i = 0;
+	if (data->num_of_philo == 0 || data->time_to_die == 0 ||
+		data->time_to_eat == 0 || data->time_to_sleep == 0)
 		return (0);
 	if (argc == 6)
 	{
-		if (data.num_eat == 0)
+		if (data->num_eat == 0)
 			return (0);
 	}
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_of_philo);
+	if (!data->forks)
+		return (-1);
+	while (i < data->num_of_philo)
+		pthread_mutex_init(&data->forks[i++], NULL);
 	return (1);
 }
 
 t_philo	*ft_init_philos(t_data *data)
 {
 	t_philo			*philos;
-	int			i;
+	pthread_mutex_t	print;
+	int				i;
 
 	i = 0;
 	philos = (t_philo *)malloc(sizeof(t_philo) * data->num_of_philo);
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_of_philo);
-	if (!philos || !data->forks)
+	if (!philos)
 		return (NULL);
 	while (i < data->num_of_philo)
-		pthread_mutex_init(&data->forks[i++], NULL);
-	i = 0;
-	while (i < data->num_of_philo)
 	{
-		philos[i].right = i;
+		pthread_mutex_init(&print, NULL);
+		philos[i].print = &print;
+		philos[i].right = &data->forks[i];
 		if (i != 0)
-			philos[i].left = i - 1;
+			philos[i].left = &data->forks[i - 1];
 		philos[i].pos = i + 1;
-		philos[i].is_dead = 0;
+		philos[i].stop = 0;
 		philos[i].eating = 0;
 		philos[i].num_eat = 0;
-		philos[i].time_to_die = data->time_to_die;
 		philos[i].time_to_sleep = data->time_to_sleep;
 		philos[i].time_to_eat = data->time_to_eat;
-		pthread_mutex_init(&philos[i].tool, NULL);
-		philos[i].data = data;
 		i++;
 	}
-	philos[0].left = data->num_of_philo - 1;
+	philos[0].left =  &data->forks[data->num_of_philo - 1];
 	return (philos);
 }
 
-void	ft_clear_philos(t_philo *philos, t_data *data)
+void	ft_clear_philos(t_data *data)
 {
 	int	i;
 
 	i = 0;
+
 	while(i < data->num_of_philo)
 	{
+		//pthread_mutex_destroy(philos[i].print);
 		pthread_mutex_destroy(&data->forks[i]);
-		pthread_mutex_destroy(&philos[i].tool);
 		i++;
 	}
+	free(data->forks);
 }
 
 long	ft_time(void)

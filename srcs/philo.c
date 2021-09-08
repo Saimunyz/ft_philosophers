@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/08 21:06:20 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 00:23:18 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,14 @@ t_data	parse_argv(int argc, char **argv)
 
 void	ft_print(char *str, t_philo *p)
 {
-	pthread_mutex_lock(&p->tool);
-	if (p->is_dead)
+	//pthread_mutex_lock(p->print);
+	if (p->stop)
+	{
+		//pthread_mutex_unlock(p->print);
 		return ;
+	}
 	printf("%lu %d %s\n", ft_time() - p->start, p->pos, str);
-	pthread_mutex_unlock(&p->tool);
+	//pthread_mutex_unlock(p->print);
 }
 
 void	ft_usleep(int	time)
@@ -56,14 +59,10 @@ void	*live(void *philo)
 	t_philo *p;
 
 	p = (t_philo *)philo;
-	//p->start = ft_time();
-	//p->last_eat = p->start;
-	while (1 && !p->is_dead)
+	while (1 && !p->stop)
 	{
-		// pthread_mutex_lock(&p->left);
-		// pthread_mutex_lock(&p->right);
-		pthread_mutex_lock(&p->data->forks[p->left]);
-		pthread_mutex_lock(&p->data->forks[p->right]);
+		pthread_mutex_lock(p->left);
+		pthread_mutex_lock(p->right);
 		ft_print("has taken a left fork", p);
 		ft_print("has taken a right fork", p);
 		p->last_eat = ft_time();
@@ -71,10 +70,8 @@ void	*live(void *philo)
 		ft_print("is eating", p);
 		ft_usleep(p->time_to_eat);
 		p->num_eat++;
-		pthread_mutex_unlock(&p->data->forks[p->left]);
-		pthread_mutex_unlock(&p->data->forks[p->right]);
-		// pthread_mutex_unlock(&p->left);
-		// pthread_mutex_unlock(&p->right);
+		pthread_mutex_unlock(p->left);
+		pthread_mutex_unlock(p->right);
 		p->eating = 0;
 		ft_print("is sleeping", p);
 		ft_usleep(p->time_to_sleep);
@@ -97,11 +94,16 @@ int	philo(t_data data)
 		philos[i].start = ft_time();
 		philos[i].last_eat = philos[i].start;
 		pthread_create(&philos[i].p, NULL, live, &(philos[i]));
-		pthread_detach(philos[i].p);
 		i++;
 	}
+	i = 0;
 	ft_monitor(philos, &data);
-	ft_clear_philos(philos, &data);
+	while(i < data.num_of_philo)
+	{
+		pthread_join(philos[i].p, NULL);
+		i++;
+	}
+	ft_clear_philos(&data);
 	free(philos);
 	return (1);
 }
@@ -109,15 +111,19 @@ int	philo(t_data data)
 int	main(int argc, char **argv)
 {
 	t_data	data;
+	int		check;
 
 	if (argc == 5 || argc == 6)
 	{
 		data = parse_argv(argc, argv);
-		if (ft_check_data(data, argc))
+		check = ft_check_data(&data, argc);
+		if (check)
 		{
 			if (philo(data) == -1)
 				printf("Malloc error\n");
 		}
+		else if (check == -1)
+			printf("Malloc error\n");
 		else
 		{
 			printf("Not valid params\nYou should enter 4 [5] params:\n");
