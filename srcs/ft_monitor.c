@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 16:22:42 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 01:06:25 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 01:19:42 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		ft_check_num_eat(t_philo *philo, int num_of_philo, int num_eat)
 	int	i;
 
 	i = 0;
-	while (philo[i].num_eat > 0 && philo[i].num_eat >= num_eat)
+	while (num_eat > 0 && philo[i].num_eat >= num_eat)
 	{
 		if (i == num_of_philo - 1)
 		{
