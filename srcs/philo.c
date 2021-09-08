@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 00:23:18 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 01:05:55 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void	*live(void *philo)
 		p->last_eat = ft_time();
 		p->eating = 1;
 		ft_print("is eating", p);
-		ft_usleep(p->time_to_eat);
 		p->num_eat++;
+		ft_usleep(p->time_to_eat);
 		pthread_mutex_unlock(p->left);
 		pthread_mutex_unlock(p->right);
 		p->eating = 0;
@@ -94,6 +94,7 @@ int	philo(t_data data)
 		philos[i].start = ft_time();
 		philos[i].last_eat = philos[i].start;
 		pthread_create(&philos[i].p, NULL, live, &(philos[i]));
+		usleep(100);
 		i++;
 	}
 	i = 0;
