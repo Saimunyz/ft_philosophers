@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:55 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/07 19:59:14 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/08 17:36:32 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,16 @@
 # include "unistd.h"
 # include "pthread.h"
 # include "sys/time.h"
+
+typedef struct s_data
+{
+	int	num_of_philo;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	num_eat;
+	pthread_mutex_t	*forks;
+}				t_data;
 
 typedef struct s_philo
 {
@@ -31,28 +41,19 @@ typedef struct s_philo
 	int				num_eat;
 	long			start;
 	long			last_eat;
-	pthread_mutex_t	left;
-	pthread_mutex_t	right;
+	int				left;
+	int				right;
+	t_data			*data;
 	pthread_mutex_t	tool;
 }				t_philo;
-
-typedef struct s_data
-{
-	int	num_of_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	num_eat;
-	pthread_mutex_t	*forks;
-}				t_data;
 
 int				ft_isdigit(char *str);
 int				ft_atoi(const char *str);
 int				ft_check_data(t_data data, int argc);
 void			ft_monitor(t_philo *philo, t_data *data);
 long			ft_time(void);
-void			ft_clear_philos(t_philo *philos, int number_of_philos);
+void			ft_clear_philos(t_philo *philos, t_data *data);
 t_data			ft_init_data(void);
-t_philo			*ft_init_philos(t_data data);
+t_philo			*ft_init_philos(t_data *data);
 
 #endif

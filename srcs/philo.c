@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/07 23:44:40 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/08 17:35:30 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,25 @@ void	*live(void *philo)
 	t_philo *p;
 
 	p = (t_philo *)philo;
-	p->start = ft_time();
-	p->last_eat = p->start;
+	//p->start = ft_time();
+	//p->last_eat = p->start;
 	while (1 && !p->is_dead)
 	{
-		pthread_mutex_lock(&p->left);
+		// pthread_mutex_lock(&p->left);
+		// pthread_mutex_lock(&p->right);
+		pthread_mutex_lock(&p->data->forks[p->left]);
+		pthread_mutex_lock(&p->data->forks[p->right]);
 		ft_print("has taken a left fork", p);
-		pthread_mutex_lock(&p->right);
 		ft_print("has taken a right fork", p);
 		p->eating = 1;
 		ft_print("is eating", p);
 		ft_usleep(p->time_to_eat);
 		p->last_eat = ft_time();
 		p->num_eat++;
-		pthread_mutex_unlock(&p->left);
-		pthread_mutex_unlock(&p->right);
+		pthread_mutex_unlock(&p->data->forks[p->left]);
+		pthread_mutex_unlock(&p->data->forks[p->right]);
+		// pthread_mutex_unlock(&p->left);
+		// pthread_mutex_unlock(&p->right);
 		p->eating = 0;
 		ft_print("is sleeping", p);
 		ft_usleep(p->time_to_sleep);
@@ -85,18 +89,19 @@ int	philo(t_data data)
 	int		i;
 
 	i = 0;
-	philos = ft_init_philos(data);
+	philos = ft_init_philos(&data);
 	if (!philos)
 		return (-1);
 	while (i < data.num_of_philo)
 	{
+		philos[i].start = ft_time();
+		philos[i].last_eat = philos[i].start;
 		pthread_create(&philos[i].p, NULL, live, &(philos[i]));
 		pthread_detach(philos[i].p);
-		usleep(100);
 		i++;
 	}
 	ft_monitor(philos, &data);
-	ft_clear_philos(philos, data.num_of_philo);
+	ft_clear_philos(philos, &data);
 	free(philos);
 	return (1);
 }
