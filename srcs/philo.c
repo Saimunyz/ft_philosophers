@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 20:37:29 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 20:44:27 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,12 @@ void	*live(void *philo)
 		ft_print("has taken a right fork", p);
 		pthread_mutex_lock(p->death);
 		p->last_eat = ft_time();
-		p->eating = 1;
 		ft_print("is eating", p);
 		pthread_mutex_unlock(p->death);
 		p->num_eat++;
 		ft_usleep(p->time_to_eat);
 		pthread_mutex_unlock(p->left);
 		pthread_mutex_unlock(p->right);
-		p->eating = 0;
 		ft_print("is sleeping", p);
 		ft_usleep(p->time_to_sleep);
 		ft_print("is thinking", p);

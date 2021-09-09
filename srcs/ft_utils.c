@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:49:30 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 20:32:00 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 21:12:17 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ t_philo	*ft_init_philos(t_data *data)
 			philos[i].left = &data->forks[i - 1];
 		philos[i].pos = i + 1;
 		philos[i].stop = 0;
-		philos[i].eating = 0;
 		philos[i].num_eat = 0;
 		philos[i].time_to_sleep = data->time_to_sleep;
 		philos[i].time_to_eat = data->time_to_eat;

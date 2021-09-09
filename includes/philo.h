@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:55 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 20:24:07 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 21:11:33 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 
 typedef struct s_data
 {
-	int	num_of_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	num_eat;
+	int				num_of_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				num_eat;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	*death;
 	pthread_mutex_t	*print;
@@ -35,7 +35,6 @@ typedef struct s_philo
 {
 	pthread_t		p;
 	int				pos;
-	int				eating;
 	int				stop;
 	int				time_to_sleep;
 	int				time_to_eat;
