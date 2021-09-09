@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 20:44:27 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 21:42:30 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	*live(void *philo)
 		ft_print("is sleeping", p);
 		ft_usleep(p->time_to_sleep);
 		ft_print("is thinking", p);
-		usleep(100);
 	}
 	return (0);
 }
