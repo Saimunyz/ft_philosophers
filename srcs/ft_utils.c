@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:49:30 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 21:12:17 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 22:21:57 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	ft_check_data(t_data *data, int argc)
 	int	i;
 
 	i = 0;
-	if (data->num_of_philo == 0 || data->time_to_die == 0 ||
-		data->time_to_eat == 0 || data->time_to_sleep == 0)
+	if (data->num_of_philo == 0 || data->time_to_die == 0
+		|| data->time_to_eat == 0 || data->time_to_sleep == 0)
 		return (0);
 	if (argc == 6)
 	{
@@ -78,7 +78,7 @@ t_philo	*ft_init_philos(t_data *data)
 		philos[i].time_to_eat = data->time_to_eat;
 		i++;
 	}
-	philos[0].left =  &data->forks[data->num_of_philo - 1];
+	philos[0].left = &data->forks[data->num_of_philo - 1];
 	return (philos);
 }
 
@@ -89,7 +89,7 @@ void	ft_clear(t_data *data)
 	i = 0;
 	pthread_mutex_destroy(data->death);
 	pthread_mutex_destroy(data->print);
-	while(i < data->num_of_philo)
+	while (i < data->num_of_philo)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
 		i++;

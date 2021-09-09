@@ -12,6 +12,7 @@ CFILE =		philo.c \
 			ft_atoi.c \
 			ft_utils.c \
 			ft_monitor.c \
+			ft_print.c \
 
 
 OFILE =		$(CFILE:.c=.o)

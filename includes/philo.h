@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:55 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 21:11:33 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 22:24:01 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void			ft_monitor(t_philo *philo, t_data *data);
 long			ft_time(void);
 void			ft_clear(t_data *data);
 void			ft_free_data(t_data *data);
+void			ft_print(char *str, t_philo *p);
 t_data			ft_init_data(void);
 t_philo			*ft_init_philos(t_data *data);
 

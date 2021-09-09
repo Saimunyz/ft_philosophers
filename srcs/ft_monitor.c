@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 16:22:42 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 20:54:28 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 22:21:03 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ static void	ft_stop(t_philo *p, int num_of_philo)
 	int	i;
 
 	i = 0;
-	while(i < num_of_philo)
+	while (i < num_of_philo)
 	{
 		p[i].stop = 1;
 		i++;
 	}
 }
 
-int		ft_check_num_eat(t_philo *philo, int num_of_philo, int num_eat)
+int	ft_check_num_eat(t_philo *philo, int num_of_philo, int num_eat)
 {
 	int	i;
 
@@ -61,7 +61,7 @@ int	ft_check_is_life(t_philo *p, int num_of_philo, int time_to_die)
 			ft_stop(p, num_of_philo);
 			printf("%ld %d died\n", ft_time() - p[i].start, p[i].pos);
 			pthread_mutex_unlock(p->death);
-			return(1);
+			return (1);
 		}
 		pthread_mutex_unlock(p->death);
 		i++;

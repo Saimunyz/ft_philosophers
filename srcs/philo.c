@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 21:58:55 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 22:22:56 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,7 @@ t_data	parse_argv(int argc, char **argv)
 	return (data);
 }
 
-void	ft_print(char *str, t_philo *p)
-{
-	pthread_mutex_lock(p->print);
-	if (p->stop)
-	{
-		pthread_mutex_unlock(p->print);
-		return ;
-	}
-	printf("%lu %d %s\n", ft_time() - p->start, p->pos, str);
-	pthread_mutex_unlock(p->print);
-}
-
-void	ft_usleep(int	time)
+void	ft_usleep(int time)
 {
 	long	stop;
 
@@ -56,7 +44,7 @@ void	ft_usleep(int	time)
 
 void	*live(void *philo)
 {
-	t_philo *p;
+	t_philo	*p;
 
 	p = (t_philo *)philo;
 	while (1 && !p->stop && !(p->right == p->left))
@@ -99,7 +87,7 @@ int	philo(t_data data)
 	}
 	i = 0;
 	ft_monitor(philos, &data);
-	while(i < data.num_of_philo)
+	while (i < data.num_of_philo)
 	{
 		pthread_join(philos[i].p, NULL);
 		i++;
