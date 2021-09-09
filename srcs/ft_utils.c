@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:49:30 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 00:23:00 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 20:32:00 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ t_data	ft_init_data(void)
 	data.time_to_eat = 0;
 	data.time_to_sleep = 0;
 	data.num_eat = 0;
+	data.death = NULL;
+	data.print = NULL;
+	data.forks = NULL;
 	return (data);
 }
 
@@ -38,17 +41,23 @@ int	ft_check_data(t_data *data, int argc)
 			return (0);
 	}
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_of_philo);
-	if (!data->forks)
+	data->death = malloc(sizeof(pthread_mutex_t));
+	data->print = malloc(sizeof(pthread_mutex_t));
+	if (!data->forks || !data->death || !data->print)
+	{
+		ft_free_data(data);
 		return (-1);
+	}
 	while (i < data->num_of_philo)
 		pthread_mutex_init(&data->forks[i++], NULL);
+	pthread_mutex_init(data->death, NULL);
+	pthread_mutex_init(data->print, NULL);
 	return (1);
 }
 
 t_philo	*ft_init_philos(t_data *data)
 {
 	t_philo			*philos;
-	pthread_mutex_t	print;
 	int				i;
 
 	i = 0;
@@ -57,8 +66,8 @@ t_philo	*ft_init_philos(t_data *data)
 		return (NULL);
 	while (i < data->num_of_philo)
 	{
-		pthread_mutex_init(&print, NULL);
-		philos[i].print = &print;
+		philos[i].death = data->death;
+		philos[i].print = data->print;
 		philos[i].right = &data->forks[i];
 		if (i != 0)
 			philos[i].left = &data->forks[i - 1];
@@ -74,19 +83,19 @@ t_philo	*ft_init_philos(t_data *data)
 	return (philos);
 }
 
-void	ft_clear_philos(t_data *data)
+void	ft_clear(t_data *data)
 {
 	int	i;
 
 	i = 0;
-
+	pthread_mutex_destroy(data->death);
+	pthread_mutex_destroy(data->print);
 	while(i < data->num_of_philo)
 	{
-		//pthread_mutex_destroy(philos[i].print);
 		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}
-	free(data->forks);
+	ft_free_data(data);
 }
 
 long	ft_time(void)

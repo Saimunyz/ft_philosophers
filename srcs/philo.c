@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 01:38:17 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 20:37:29 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,14 @@ t_data	parse_argv(int argc, char **argv)
 
 void	ft_print(char *str, t_philo *p)
 {
+	pthread_mutex_lock(p->print);
 	if (p->stop)
+	{
+		pthread_mutex_unlock(p->print);
 		return ;
+	}
 	printf("%lu %d %s\n", ft_time() - p->start, p->pos, str);
+	pthread_mutex_unlock(p->print);
 }
 
 void	ft_usleep(int	time)
@@ -60,9 +65,11 @@ void	*live(void *philo)
 		pthread_mutex_lock(p->right);
 		ft_print("has taken a left fork", p);
 		ft_print("has taken a right fork", p);
+		pthread_mutex_lock(p->death);
 		p->last_eat = ft_time();
 		p->eating = 1;
 		ft_print("is eating", p);
+		pthread_mutex_unlock(p->death);
 		p->num_eat++;
 		ft_usleep(p->time_to_eat);
 		pthread_mutex_unlock(p->left);
@@ -71,6 +78,7 @@ void	*live(void *philo)
 		ft_print("is sleeping", p);
 		ft_usleep(p->time_to_sleep);
 		ft_print("is thinking", p);
+		usleep(100);
 	}
 	return (0);
 }
@@ -89,7 +97,6 @@ int	philo(t_data data)
 		philos[i].start = ft_time();
 		philos[i].last_eat = philos[i].start;
 		pthread_create(&philos[i].p, NULL, live, &(philos[i]));
-		usleep(100);
 		i++;
 	}
 	i = 0;
@@ -99,7 +106,7 @@ int	philo(t_data data)
 		pthread_join(philos[i].p, NULL);
 		i++;
 	}
-	ft_clear_philos(&data);
+	ft_clear(&data);
 	free(philos);
 	return (1);
 }

@@ -6,11 +6,18 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 16:22:42 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 01:25:07 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 20:37:24 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	ft_free_data(t_data *data)
+{
+	free(data->death);
+	free(data->forks);
+	free(data->print);
+}
 
 static void	ft_stop(t_philo *p, int num_of_philo)
 {
@@ -48,12 +55,15 @@ int	ft_check_is_life(t_philo *p, int num_of_philo, int time_to_die)
 	i = 0;
 	while (i < num_of_philo)
 	{
-		if (ft_time() - p[i].last_eat >= time_to_die && p[i].eating != 1)
+		pthread_mutex_lock(p->death);
+		if (ft_time() - p[i].last_eat >= time_to_die) //&& p[i].eating != 1)
 		{
 			ft_stop(p, num_of_philo);
 			printf("%ld %d died\n", ft_time() - p[i].start, p[i].pos);
+			pthread_mutex_unlock(p->death);
 			return(1);
 		}
+		pthread_mutex_unlock(p->death);
 		i++;
 	}
 	return (0);

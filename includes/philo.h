@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:55 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 00:23:07 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 20:24:07 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ typedef struct s_data
 	int	time_to_sleep;
 	int	num_eat;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*death;
+	pthread_mutex_t	*print;
 }				t_data;
 
 typedef struct s_philo
@@ -42,6 +44,7 @@ typedef struct s_philo
 	long			last_eat;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
+	pthread_mutex_t	*death;
 	pthread_mutex_t	*print;
 }				t_philo;
 
@@ -50,7 +53,8 @@ int				ft_atoi(const char *str);
 int				ft_check_data(t_data *data, int argc);
 void			ft_monitor(t_philo *philo, t_data *data);
 long			ft_time(void);
-void			ft_clear_philos(t_data *data);
+void			ft_clear(t_data *data);
+void			ft_free_data(t_data *data);
 t_data			ft_init_data(void);
 t_philo			*ft_init_philos(t_data *data);
 
