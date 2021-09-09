@@ -6,7 +6,7 @@
 /*   By: swagstaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 18:23:14 by swagstaf          #+#    #+#             */
-/*   Updated: 2021/09/09 21:42:30 by swagstaf         ###   ########.fr       */
+/*   Updated: 2021/09/09 21:58:55 by swagstaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	philo(t_data data)
 		philos[i].start = ft_time();
 		philos[i].last_eat = philos[i].start;
 		pthread_create(&philos[i].p, NULL, live, &(philos[i]));
+		usleep(100);
 		i++;
 	}
 	i = 0;
